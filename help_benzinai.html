@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Help – Analisi Percorsi, Copertura Punti di Interesse e Poliambulatori</title>
+
+  <!-- Font come l'app -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Palette coerente con l'app (giallino) */
+      --brand:#ca8a04;        /* amber 600 */
+      --brand-2:#f59e0b;      /* amber 500 */
+      --ink:#0a0a0a;
+      --muted:#6b7280;
+      --bg:#fffde7;           /* giallo chiaro */
+      --card:#ffffff;
+      --ring:rgba(234,179,8,.30); /* amber ring */
+      --line:#f3e8c7;         /* bordo chiaro */
+    }
+
+    html,body{
+      margin:0; padding:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Outfit',system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;
+      line-height:1.55;
+    }
+
+    /* Full width come richiesto */
+    .container{
+      max-width:100%;
+      margin:8px auto 24px;
+      padding: 0 10px;
+    }
+
+    .hero{
+      background:linear-gradient(120deg, #fffbe8 0%, #fff7cc 100%);
+      border:1px solid var(--line);
+      padding:24px 18px;
+      border-radius:18px;
+    }
+    h1{margin:0 0 8px;font-size: clamp(28px, 4vw, 40px);color:var(--brand)}
+    .subtitle{color:var(--muted);margin:0}
+
+    /* Toolbar */
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+    .btn{
+      appearance:none;border:1px solid var(--brand-2);background:#fff;color:var(--brand);
+      padding:8px 12px;border-radius:12px;font-weight:700;cursor:pointer
+    }
+    .btn:hover{background:#fff4c2}
+
+    /* TOC */
+    nav.toc{margin:18px 0 8px}
+    nav.toc a{
+      display:inline-block;margin:0 10px 10px 0;padding:8px 12px;border-radius:10px;
+      border:1px dashed var(--brand-2);color:var(--brand);text-decoration:none;font-weight:600
+    }
+    nav.toc a:hover{background:#fff4c2}
+
+    /* Section wrappers (expandable) */
+    details{
+      background:var(--card);border:1px solid var(--line);border-radius:16px;
+      padding:0;margin:14px 0;box-shadow:0 1px 0 rgba(16,24,40,.03)
+    }
+    details[open]{box-shadow:0 8px 24px var(--ring)}
+    summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 18px}
+    summary::-webkit-details-marker{display:none}
+    .chev{flex:0 0 22px;height:22px;display:grid;place-items:center;border:1.5px solid var(--brand-2);border-radius:50%;transition:transform .25s}
+    details[open] .chev{transform:rotate(90deg)}
+    .sum-title{font-size:18px;font-weight:800;color:var(--brand)}
+    .sum-desc{color:var(--muted);font-size:14px}
+    .panel{padding:0 18px 18px}
+
+    /* Card lists */
+    .list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+    .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+    .card h4{margin:0 0 6px;color:#0f172a}
+    .muted{color:var(--muted)}
+
+    /* Badges (in giallino) */
+    .badge{
+      display:inline-block;padding:4px 10px;border-radius:999px;
+      background:#fff4c2;color:#7c5a07;font-size:12px;font-weight:800;border:1px solid #fde68a
+    }
+
+    /* Lists */
+    ul{margin:10px 0 10px 18px}
+    li{margin:6px 0}
+
+    /* Footer note */
+    .note{font-size:13px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>Help – Analisi Percorsi, Punti di Interesse, Poliambulatori</h1>
+      <p class="subtitle">Stato attuale, roadmap e dati necessari</p>
+    </header>
+
+    <!-- OGGI -->
+    <details id="oggi" open>
+      <summary>
+        <span class="chev">›</span>
+        <div>
+          <div class="sum-title">✅ Cosa fa oggi l’app</div>
+          <div class="sum-desc">Funzioni attive e già disponibili</div>
+        </div>
+      </summary>
+      <div class="panel">
+        <ul>
+          <li><strong>Percorsi e distanze</strong>: calcola la strada migliore tra due o più punti e mostra il tracciato su mappa interattiva.</li>
+          <li><strong>Clienti ↔ Centri diagnostici</strong>: assegna ogni cliente (o PI) al centro più vicino con distanza e tempo di accesso.</li>
+          <li><strong>Copertura</strong>: misura quanti clienti/PI rientrano entro una distanza o un tempo massimo per ogni centro; evidenzia gli scoperti.</li>
+          <li><strong>Punti vendita (benzinai)</strong>: identifica i benzinai vicini ai clienti o al percorso e propone una classifica preliminare.</li>
+          <li><strong>Ottimizzazione</strong>: riequilibra le assegnazioni verso il centro più efficiente e suggerisce deviazioni minime verso benzinai convenienti.</li>
+          <li><strong>Visualizzazione</strong>: marker chiari, linee di percorso, cerchi di copertura e indicatori chiave in un’unica mappa.</li>
+        </ul>
+        <p class="note">In sintesi, l’app aiuta a valutare copertura territoriale e convenienza dei punti vendita combinando distanza, tempi e dati di posizione.</p>
+      </div>
+    </details>
+
+    <!-- FUTURO -->
+    <details id="futuro">
+      <summary>
+        <span class="chev">›</span>
+        <div>
+          <div class="sum-title">🚀 Cosa può fare con nuove API (Roadmap)</div>
+          <div class="sum-desc">Funzioni evolutive per analisi più strategiche</div>
+        </div>
+      </summary>
+      <div class="panel">
+        <div class="list">
+          <div class="card">
+            <h4>Traffico reale e volumi</h4>
+            <p class="muted">Stimare il numero medio di auto sulle strade (escluse autostrade) vicino a benzinai e PI, per individuare le zone più frequentate.</p>
+          </div>
+          <div class="card">
+            <h4>Analisi avanzata dei benzinai</h4>
+            <p class="muted">Punteggio che combina prezzo, flusso veicolare e accessibilità, con heatmap e ranking dei punti più “proficui”.</p>
+          </div>
+          <div class="card">
+            <h4>Concorrenti diagnostici</h4>
+            <p class="muted">Mappare i concorrenti, confrontare bacini e coperture, stimare i centri più redditizi e le migliori aree per nuove aperture.</p>
+          </div>
+          <div class="card">
+            <h4>Analisi demografica & budget d’uso</h4>
+            <p class="muted">Usare età e sesso della popolazione per stimare l’uso atteso dei centri e definire un budget di utilizzo per zona.</p>
+          </div>
+          <div class="card">
+            <h4>Insights con AI</h4>
+            <p class="muted">Stime qualitative su capienza dei centri e frequenza dei punti vendita, scenari “what-if” e spiegazioni chiare.</p>
+          </div>
+          <div class="card">
+            <h4>Altri potenziamenti</h4>
+            <p class="muted">Meteo lungo i percorsi, stima CO₂, esportazioni (CSV/Excel/GeoJSON) e ottimizzazione logistica dei giri.</p>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- DATI NECESSARI -->
+    <details id="dati">
+      <summary>
+        <span class="chev">›</span>
+        <div>
+          <div class="sum-title">📊 Dati necessari</div>
+          <div class="sum-desc">Cosa abbiamo già e cosa serve per attivare le funzioni avanzate</div>
+        </div>
+      </summary>
+      <div class="panel">
+        <h3 class="badge">Disponibili oggi</h3>
+        <ul>
+          <li>Geolocalizzazione dei clienti/PI (indirizzi o coordinate).</li>
+          <li>Elenco dei punti vendita (benzinai) con posizione e prezzi carburante.</li>
+          <li>Elenco dei centri diagnostici (PoliAmbulatori) con posizione.</li>
+          <li>Geolocalizzazione dei centri diagnostici concorrenti.</li>
+          <li>Percorsi, distanze e tempi calcolati tra clienti/PI, benzinai e centri.</li>
+        </ul>
+
+        <h3 class="badge">Richiesti per la roadmap</h3>
+        <ul>
+          <li><strong>Flussi veicolari</strong> per strada (per stimare i passaggi medi nelle aree di interesse).</li>
+          <li><strong>Dati demografici</strong> per zona (popolazione per età/sesso, es. open data ISTAT o equivalenti locali).</li>
+          <li><strong>Dati meteo</strong> lungo i percorsi (ritardi, condizioni avverse).</li>
+          <li><strong>Fattori ambientali</strong> per stimare emissioni di CO₂ dei viaggi.</li>
+          <li><strong>Layer OpenAI (opzionale)</strong> – dati necessari specifici:
+            <ul>
+              <li>Capacità e caratteristiche dei centri (orari, macchinari, tipologia prestazioni, posti/giorno).</li>
+              <li>Storico visite/prestazioni per zona/centro (per calibrare il modello).</li>
+              <li>Bacino demografico per età/sesso per ciascuna zona (quartiere/comune).</li>
+              <li>Tempi/distanze d’accesso (auto, TPL), accessibilità/parking.</li>
+              <li>Concorrenza: numero e tipologia centri alternativi nelle vicinanze.</li>
+              <li>Prezzi/tariffe e vincoli normativi locali se rilevanti.</li>
+              <li>Obiettivi di previsione chiari (es. visite/giorno, saturazione %).</li>
+            </ul>
+          </li>
+        </ul>
+        <p class="note">L’accuratezza cresce con la qualità/aggiornamento delle fonti. Attenzione a privacy e minimizzazione dei dati personali.</p>
+      </div>
+    </details>
+
+    <!-- MODELLI DI UTILIZZO SANITARIO -->
+    <details id="modelli">
+      <summary>
+        <span class="chev">›</span>
+        <div>
+          <div class="sum-title">🧠 Concetto teorico e modelli di utilizzo sanitario</div>
+          <div class="sum-desc">Come stimare il potenziale di utilizzo dei centri per età/sesso e accessibilità</div>
+        </div>
+      </summary>
+      <div class="panel">
+        <p>
+          Nel campo sanitario, l’utilizzo dei servizi è influenzato da più fattori. Un modello noto è
+          <em>l’Andersen healthcare utilization model</em>, che distingue tra:
+        </p>
+        <ul>
+          <li><strong>Predisposing factors</strong>: età, sesso, istruzione, caratteristiche demografiche.</li>
+          <li><strong>Enabling factors</strong>: condizioni che permettono l’accesso (reddito, distanza/tempo, assicurazione, disponibilità del servizio).</li>
+          <li><strong>Need factors</strong>: bisogno percepito o reale di salute.</li>
+        </ul>
+
+        <p>Studi recenti evidenziano che i fattori demografici (età, genere) sono predittori significativi dell’utilizzo sanitario.</p>
+
+        <h4>Idea applicativa</h4>
+        <ol>
+          <li>Per ciascuna zona geografica (quartiere/comune) raccogli la popolazione per fasce d’età e sesso.</li>
+          <li>Stima un <strong>tasso base di utilizzo</strong> per fascia (es. 60–70 anni con probabilità maggiore di diagnostica).</li>
+          <li>Modifica il tasso con gli <strong>enabling factors</strong> della zona: distanza/tempo, accessibilità, capacità del centro.</li>
+          <li>Combina per ottenere <strong>utenti attesi</strong> per centro; da qui stimi <strong>visite/giorno/mese</strong> (budget d’uso).</li>
+          <li>Usa la stima come “domanda attesa” per valutare i tuoi punti vendita (benzinaio adiacente al bacino) o pianificare nuove aperture.</li>
+        </ol>
+
+        <h4>🔧 Come integrarlo tecnicamente</h4>
+        <ol>
+          <li><strong>Dati demografici geolocalizzati</strong>: API/od open data (es. ISTAT, anagrafi comunali, dataset internazionali).</li>
+          <li><strong>Modello predittivo</strong> (regressione/ML): input = demografia per fascia, distanza/tempo, capacità, concorrenza, storico; output = utenti/visite stimate per periodo.</li>
+          <li><strong>Enrichment con AI</strong> (OpenAI): generare range plausibili e insight qualitativi su capacità/frequenza, con prompt ben costruiti e validazione su dati reali.</li>
+          <li><strong>Integrazione in app</strong>: stima domanda → confronto con offerta (centri/benzinai) → decisioni su marketing, ampliamenti e nuove aperture.</li>
+        </ol>
+
+        <h4>⚠️ Limiti e precauzioni</h4>
+        <ul>
+          <li>Le stime sono probabilistiche e vanno validate con dati empirici.</li>
+          <li>Servono dati demografici granulari e aggiornati.</li>
+          <li>Privacy: evitare dati personali identificativi; usare dati aggregati.</li>
+          <li>Possibili bias (barriere economiche/culturali) non catturati dai soli fattori demografici.</li>
+        </ul>
+      </div>
+    </details>
+
+    <footer class="note" style="margin-top:18px">
+      Versione: 1.0 • Documento pensato per la lettura del cliente finale.
+    </footer>
+  </div>
+
+  <script>
+    // Expand/Collapse All
+    const expandAllBtn = document.getElementById('expandAll');
+    const collapseAllBtn = document.getElementById('collapseAll');
+    const allDetails = () => Array.from(document.querySelectorAll('details'));
+    expandAllBtn.addEventListener('click', () => { allDetails().forEach(d => d.open = true); });
+    collapseAllBtn.addEventListener('click', () => { allDetails().forEach(d => d.open = false); });
+
+    // Keyboard accessibility: toggle with Enter/Space on summary
+    document.querySelectorAll('summary').forEach(s => {
+      s.setAttribute('tabindex','0');
+      s.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault(); s.parentElement.open = !s.parentElement.open;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
