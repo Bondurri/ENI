@@ -1,0 +1,36 @@
+# Core scientifiche
+numpy>=2.3
+pandas>=2.3
+
+# Web app
+streamlit>=1.50
+
+# Mappe / geospaziale
+folium>=0.20
+streamlit-folium>=0.18
+geopandas>=1.1
+shapely>=2.1
+pyproj>=3.7
+osmnx>=2.0
+networkx>=3.5
+
+# Database
+sqlalchemy>=2.0
+
+# Geocoding
+geopy>=2.4
+openrouteservice>=2.3
+
+# Machine Learning / analisi
+scikit-learn>=1.7
+scipy>=1.16
+
+# Visualizzazione
+matplotlib>=3.10
+seaborn>=0.13
+
+# Utilità
+requests>=2.32
+tqdm>=4.66
+pyarrow>=21.0
+openpyxl>=3.1
